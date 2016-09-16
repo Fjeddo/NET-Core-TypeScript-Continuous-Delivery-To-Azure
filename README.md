@@ -4,21 +4,34 @@ This is a small example showing how to make continuous delivery of a web applica
 
 **Please note that this Readme is committed after all other commits.** Open this file in a separate browser tab or window before browsing the code referenced in the text below.
 
-## Prerequisites
+##Prerequisites
 
-To fully implement this solution the following things are needed:
+To make the most use out of this text and code it is assumed that the reader have some knowledgde about
+- Windows Azure
+- Windows Azure Portal
+- Azure Web App
+- Continuous delivery/deployment
+- Git version control
+- Connecting an Azure Web App and a version contol system (VCS) for triggering deployment
+- Kudu deployment engine
+- Visual Studio and .NET
+- NodeJs and npm
+- Gulp task runner
+
+To fully implement this solution the following tech things are needed
+
 - An **Azure subscription** for the Azure Web App (free version is sufficient)
-- **A GitHub account/repo** to be used for deployment to Azure
-- **Visual Studio 2015, Community edition or higher**
+- A **GitHub account/repo** to be used for deployment to Azure
+- **Visual Studio 2015, Community edition**
 - (.NET 4.6.2)
 - **NodeJs version 6.5.0** or later and **npm version 3.10.3** or later
 - **Azure-CLI** installed on the dev machine
 
-## Initial setup
+##Initial setup
 
 Start off by creating an Azure Web App and change the **'WEBSITE_NODE_DEFAULT_VERSION'** application setting to be at least **6.5.0**. This will have effect on the NodeJs and npm versions used by kudu in the deployment script.
 
-Create a GitHub repo and connect it for deployment to the Azure Web App in the Azure Portal - Deployment Options.
+Create a GitHub repo and connect it for deployment to the Azure Web App in the Azure Portal - Deployment Options. The default setting here is that pushing changes to the master branch will trigger a deployment, at least when it comes to git.
 
 Make sure to have a **.gitignore** file suitable for the solution. The one in this repo works for this demo.
 
