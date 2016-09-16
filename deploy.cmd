@@ -64,6 +64,15 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 :: Deployment
 :: ----------
 
+:: -------------------
+echo Some version info
+:: -------------------
+echo NodeJs version
+call :ExecuteCmd node --version
+echo npm version
+call :ExecuteCmd npm --version
+:: -------------------
+
 echo Handling ASP.NET Core Web Application deployment.
 
 :: 1. Restore nuget packages
