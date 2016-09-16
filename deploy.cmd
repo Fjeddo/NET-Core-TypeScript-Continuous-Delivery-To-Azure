@@ -75,12 +75,35 @@ call :ExecuteCmd npm --version
 
 echo Handling ASP.NET Core Web Application deployment.
 
-:: 1. Restore nuget packages
+:: 1a. Restore nuget packages
 call :ExecuteCmd nuget.exe restore -packagesavemode nuspec
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: 2. Build and publish
+:: 1b. Restore node packages (npm install)
+echo Getting into the right directory
+pushd "%DEPLOYMENT_SOURCE%\NetCoreWebApplication"
+echo Restoring npm packages
+call :ExecuteCmd npm install
+IF !ERRORLEVEL! NEQ 0 goto error
+echo npm packages restored
+popd 
+
+:: 2a. Build and publish
 call :ExecuteCmd dotnet publish ".\NetCoreWebApplication\project.json" --output "%DEPLOYMENT_TEMP%" --configuration Release
+IF !ERRORLEVEL! NEQ 0 goto error
+
+:: 2b. Run gulp tasks
+echo Getting into the right direcetory for gulp
+pushd "%DEPLOYMENT_SOURCE%\NetCoreWebApplication"
+call :ExecuteCmd "gulp"
+IF !ERRORLEVEL! NEQ 0 goto error
+echo Gulp executed
+popd
+
+:: 2c. Copying things to the right folder to make kudu do the rest
+echo Publishing app folder to temporary deployment location
+call :ExecuteCmd "xcopy" "%DEPLOYMENT_SOURCE%\NetCoreWebApplication\dist\*.*" "%DEPLOYMENT_TEMP%\wwwroot" /S /Y /I
+echo Done publishing dist folder files to temporary deployment location
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
